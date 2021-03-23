@@ -1,0 +1,32 @@
+{
+  "name": "voice-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "pkg . --out-path exec"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "open": "^8.0.3",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "pkg": "^4.4.9"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/**/*",
+      "views/**/*"
+    ]
+  },
+  "bin": {
+    "app": "server.js"
+  }
+}
