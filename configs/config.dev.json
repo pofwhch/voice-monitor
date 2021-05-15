@@ -1,0 +1,26 @@
+{
+  "userKey": "10145046",
+  "localServer": {
+    "hostName": "http://127.0.0.1",
+    "port": 8080,
+    "timeout": 30000
+  },
+  "apiServer": {
+    "hostName": "http://125.132.219.194",
+    "port": 28080,
+    "timeout": 60000,
+    "apiKey": "NmU5NDljN2M2NTZhNTZmYmY3YWVmNDI4YzYyYzZhMmM3NWNmZmVlYiAgLQo="
+  },
+  "encryption": {
+    "algorithm": "sha256",
+    "cryptoEncoding": "utf8",
+    "bufferEncoding": "base64"
+  },
+  "userList": {
+    "10145046": "최수용",
+    "10147311": "김대현",
+    "10150657": "김범준",
+    "10148590": "정혜연",
+    "10149841": "백두산"
+  }
+}
