@@ -17,19 +17,22 @@ const bufferEncoding = config.encryption.bufferEncoding;
 
 /**
  * 현재 UTC 정보를 얻는다.
- * @returns String - UCT Timestamp value
+ * @method 
+ * @returns {String{} - UTC Timestamp value
  */
 const getTimeStamp = () => {
   return new Date().toISOString();
 };
 
 /**
- * 
- * @param {*} timeStamp 
- * @param {*} queryString 
- * @returns 
+ * v-data api server와 연동하기 위한 전자서명 값을 생성한다.
+ * @method 
+ * @param {String} timeStamp - UTC Timestamp Value
+ * @param {String} queryString - request parameter
+ * @returns {String} 전자서명 값
  */
 const getSignature = (timeStamp, queryString) => {
+
   let rawHmac = crypto.createHmac(algorithm, apiKey).update(timeStamp + queryString, cryptoEncoding).digest();
   return Buffer.from(rawHmac).toString(bufferEncoding);
 };

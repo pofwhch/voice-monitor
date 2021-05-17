@@ -7,8 +7,10 @@
 const configDev = require("../configs/config.dev.json");
 const configPrd = require("../configs/config.prd.json");
 
-// package.json script 명령을 통해 실행할 경우 config 정보를 이용하여 개발용/상용 설정을 구분할 수 있다.
-// const config = process.env.npm_package_config_file === "dev" ? configDev : configPrd;
+// nodejs 환경변수 값을 이용하여 개발용/상용 설정을 구분할 수 있다.
+// 해당 환경변수는 pkg를 이용하여 바이너리 실행파일을 생성할 때는 적용되지 않으므로
+// DEV 바이너리 실행파일을 생성하려면 아래 getConfig 함수에서 return 값을
+// configDev 객체로 변경 후 build 하여야 한다. 
 const config = process.env.NODE_ENV === "DEV" ? configDev : configPrd;
 
 const getConfig = () => {
