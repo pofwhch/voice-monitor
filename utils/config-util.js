@@ -1,7 +1,7 @@
 /**
  * @fileoverview 프로그램 실행에 필요한 설정정보를 관리하는 Utility
- * @requires config.dev.json - 개발환경에 필요한 주요 설정정보
- * @requires config.prd.json - 상용환경에 필요한 주요 설정정보
+ * @requires config.dev.json 개발환경에 필요한 주요 설정정보
+ * @requires config.prd.json 상용환경에 필요한 주요 설정정보
  * @author suyong.choi
  */
 const configDev = require("../configs/config.dev.json");

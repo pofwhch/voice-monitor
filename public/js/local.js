@@ -1,4 +1,9 @@
 /**
+ * @fileoverview Front 화면 제어를 위한 javasctipt file
+ * @author suyong.choi
+ */
+
+/**
  * 데이터 원본의 datetime 정보는 모두 UTC Time으로 관리됨
  * 따라서 tabulator libarary formatter를 활용하여 local timezone으로 화면에 출력하기 위해 Default Timezone을 UTC로 설정
  * */
@@ -182,6 +187,11 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * 
+ * @method
+ * @returns {} 
+ */
 async function fnSearch() {
     let startDate = $("#dt_startDate").val() + " " + $("#se_startTime").val();
     let endDate = $("#dt_endDate").val() + " " + $("#se_endTime").val();

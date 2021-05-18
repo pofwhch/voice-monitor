@@ -1,7 +1,7 @@
 /**
  * @fileoverview STT Index Agent에 파일 검색 및 다운로드 요청을 처리하는 router
- * @requires express - 
- * @requires axios - 
+ * @requires express 웹 애플리케이션 프레임워크
+ * @requires axios HTTP 비동기 통신 라이브러리
  * @author suyong.choi
  */
 const express = require('express');

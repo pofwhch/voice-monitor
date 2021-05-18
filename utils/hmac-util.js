@@ -1,7 +1,7 @@
 /**
  * @fileoverview API 서버와 통신하기 위한 암호화 Utility
- * @requires crypto - 
- * @requires getConfig - 전체 설정정보를 관리하는 모듈의 정보 제공 함수
+ * @requires crypto 암호화 모듈
+ * @requires getConfig 전체 설정정보를 관리하는 모듈의 정보 제공 함수
  * @author suyong.choi
  */
 const crypto = require("crypto");
@@ -17,8 +17,7 @@ const bufferEncoding = config.encryption.bufferEncoding;
 
 /**
  * 현재 UTC 정보를 얻는다.
- * @method 
- * @returns {String{} - UTC Timestamp value
+ * @returns {String} UTC Timestamp value
  */
 const getTimeStamp = () => {
   return new Date().toISOString();
@@ -26,9 +25,8 @@ const getTimeStamp = () => {
 
 /**
  * v-data api server와 연동하기 위한 전자서명 값을 생성한다.
- * @method 
- * @param {String} timeStamp - UTC Timestamp Value
- * @param {String} queryString - request parameter
+ * @param {String} timeStamp UTC Timestamp Value
+ * @param {String} queryString request parameter
  * @returns {String} 전자서명 값
  */
 const getSignature = (timeStamp, queryString) => {
