@@ -44,6 +44,9 @@ const getConfig = () => {
 ```
 $ npm run build 
 ```
+5. exec path에 실행파일이 생성된다. 
+> 경로를 변경하고자 할 경우에는 build script의 --out-path 값을 원하는 path로 변경하면 된다.
+<img src='/uploads/9aaded1afebd302d64644a584c9aa2b9/Screen_Shot_2021-05-22_at_1.02.41_PM.png'  width='300' height='370'>
 
 ### 주요 Npm 실행 script
 ```
