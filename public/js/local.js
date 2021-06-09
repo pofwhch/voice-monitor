@@ -112,7 +112,7 @@ $(document).ready(function () {
 
             }, frozen:true },
             { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime", formatterParams:{
-            inputFormat: 'YYYY-MM-DDTHH:mm:sss[Z]',
+            inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
             outputFormat: 'YYYY-MM-DD HH:mm:ss',
             invalidPlaceholder: '(invalid date)',
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
