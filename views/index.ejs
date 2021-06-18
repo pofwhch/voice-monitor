@@ -143,7 +143,7 @@
                           </td>
                         </tr>
                         <tr>
-                            <td><b>Device ID (SAID/MAC주소) <span style="color:red">*</span></b></td>
+                            <td><b>Device ID (SAID/MAC주소) <span style="color:blue">*</span></b></td>
                             <td><input id="tx_deviceId" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value=""></td>
                             <td><b>단말 모델명</b></td>
                             <td>
@@ -153,7 +153,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="12%"><b>검색어 (음성인식결과) <span style="color:red">*</span></b></td>
+                            <td width="12%"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
                             <td width="30%"><input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value=""></td>
                             <td width="12%"><b>검색조건</b></td>
                             <td width="30%">
@@ -173,7 +173,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id="example-table"></div>
+            <div id="voice-table"></div>
         </div>
     </div>
     <!-- end #content -->
@@ -193,6 +193,16 @@
       <div class="modal-footer" style="text-align: center;">
           <a href="javascript:;" id = "btn_play" class="btn btn-sm btn-primary"><i class="fa fa-play"></i> Play</a>
           <a href="javascript:;" id = "btn_pause" class="btn btn-sm btn-primary"><i class="fa fa-pause"></i> Pause</a>
+      </div>
+    </div>
+
+    <!-- #modal-message -->
+    <div class="modal-content" id="modal-hist" title="발화 이력" style="display:none;">
+      <div class="modal-body">
+        <ul>
+          <li><label>이력 조회 기준&nbsp; : &nbsp;</label><label id="la_targetCreationDate"></label>, <label id="la_targetSttResult"></label></li>
+        </ul>
+        <div id="voice-hist-table"></div>
       </div>
     </div>
     

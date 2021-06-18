@@ -14,6 +14,7 @@ const localPcmListUrl = "http://127.0.0.1:8080/vdata/pcminfos";
 const localPcmUrl = "http://127.0.0.1:8080/vdata/pcm";
 
 let table;
+let histtable;
 let wavesurfer;
 let dialog;
 let selectedRowInfo;
@@ -40,8 +41,13 @@ $(document).ready(function () {
         return "<a class='btn btn-xs btn-icon btn-circle'><i class='fa fa-3x fa-play-circle'></i></a>";
     };
 
+    //Generate hist icon
+    const histIcon = function(cell, formatterParams){ 
+        return "<a class='btn btn-xs btn-icon btn-circle'><i class='fa fa-3x fa-list-ul'></i></a>";
+    };
+
     //Build Tabulator
-    table = new Tabulator("#example-table", {
+    table = new Tabulator("#voice-table", {
         height:"495px",
         placeholder:"No Data Set",
         pagination:"local",
@@ -51,7 +57,7 @@ $(document).ready(function () {
         selectable:false, //make rows selectable
         columns: [
             { title: '순번', formatter: "rownum", hozAlign: "center", vertAlign:"middle", width: 60, frozen:true },
-            { title: '들어보기', formatter: playIcon, width:80, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
+            { title: '들어보기', formatter: playIcon, width:100, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
                 selectedRowInfo = cell.getRow().getData();
 
                 $('#la_sttResult').text(selectedRowInfo.sttResult);
@@ -111,6 +117,51 @@ $(document).ready(function () {
                 // wavesurfer.play();
 
             }, frozen:true },
+            { title: '이력보기', formatter: histIcon, width:100, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
+                selectedRowInfo = cell.getRow().getData();
+                let creationDate = selectedRowInfo.creationDate;
+                
+                $('#la_targetSttResult').text(selectedRowInfo.sttResult);
+                $('#la_targetCreationDate').text(moment.tz(creationDate, 'Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'));
+
+                // 검색 시간을 선택한 데이터 생성시간 -2 ~ +2로 설정
+                let startDate = new moment(creationDate).add(-2, 'h').toDate();
+                let endDate = new moment(creationDate).add(2, 'h').toDate();
+                
+                const params = $.param ({
+                    startDate: new Date(startDate).toISOString(),
+                    endDate: new Date(endDate).toISOString(),
+                    deviceId: selectedRowInfo.deviceId,
+                    deviceType: '',
+                    searchWords: '',
+                    searchType: ''
+                });
+
+                /* ================== START : Loading Overlay 처리 ================== */
+                $("#voice-hist-table").LoadingOverlay("show", {
+                    background  : "rgba(192,192,192,0.3)"
+                });
+                $("#voice-hist-table").LoadingOverlay("show");
+                /* ================== END : Loading Overlay 처리 ================== */
+
+                /* ================== START : 검색 결과 테이블 반영 ================== */
+                let response = await fetch(`${localPcmListUrl}?${params}`);
+                const responseJson = await response.json();
+
+                $("#voice-hist-table").LoadingOverlay("hide", true);
+
+                if(responseJson.rc != 200){
+                    alert("발화이력 검색에 실패하였습니다.\nresMsg: " + responseJson.resMsg);
+                    histtable.setData([]);
+                    return;
+                }
+
+                histtable.setData(responseJson.resMsg);
+                /* ================== END : 검색 결과 테이블 반영 ================== */
+
+                // 발화이력 팝업 출력
+                $("#modal-hist").dialog("open");
+            }, frozen:true },
             { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime", formatterParams:{
             inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
             outputFormat: 'YYYY-MM-DD HH:mm:ss',
@@ -118,7 +169,7 @@ $(document).ready(function () {
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
             }},
             { title: '단말 모델명', field: 'deviceType', width: 100, hozAlign: "center", vertAlign:"middle" },
-            { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle" },
+            { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle", visible:false},
             { title: '음성인식결과', field: 'sttResult', width: 200, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
             { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
             { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
@@ -130,6 +181,36 @@ $(document).ready(function () {
     // set default table data
     let tableData = [];
     table.setData(tableData);
+
+    //Build histtable Tabulator
+    histtable = new Tabulator("#voice-hist-table", {
+        height:"315px",
+        placeholder:"No Data Set",
+        pagination:"local",
+        paginationSize:10,
+        paginationSizeSelector:[10, 20, 50],
+        movableColumns:false,
+        selectable:false, //make rows selectable
+        columns: [
+            { title: '순번', formatter: "rownum", hozAlign: "center", vertAlign:"middle", width: 60, frozen:true },
+            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime", formatterParams:{
+            inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
+            outputFormat: 'YYYY-MM-DD HH:mm:ss',
+            invalidPlaceholder: '(invalid date)',
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            }},
+            // { title: '단말 모델명', field: 'deviceType', width: 100, hozAlign: "center", vertAlign:"middle" },
+            // { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle" },
+            { title: '음성인식결과', field: 'sttResult', width: 400, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            // { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
+            // { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            // { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" }
+        ],
+        tooltips:true
+    });
+
+    // set default histtable data
+    histtable.setData([]);
     
     // DeviceId Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
     $('#tx_deviceId').keydown(function (key) {
@@ -185,6 +266,22 @@ $(document).ready(function () {
     document.getElementById('btn_pause').addEventListener('click', async () => {
         wavesurfer.pause();
     });
+
+    // 발화이력 Dailog Component 선언
+    dialog = $( "#modal-hist" ).dialog({
+        autoOpen: false,
+        show: {
+            effect: "fade",
+            duration: 1000
+        },
+        height: 410,
+        width: '40%',
+        modal: true,
+        close: function() {
+            // 팝업창을 닫을 경우 발화 이력 데이터를 초기화한다,
+            histtable.setData([]);
+        }
+    });
 });
 
 /**
@@ -206,16 +303,16 @@ async function fnSearch() {
     });
 
     /* ================== START : Loading Overlay 처리 ================== */
-    $("#example-table").LoadingOverlay("show", {
+    $("#voice-table").LoadingOverlay("show", {
         background  : "rgba(192,192,192,0.3)"
     });
-    $("#example-table").LoadingOverlay("show");
+    $("#voice-table").LoadingOverlay("show");
     /* ================== END : Loading Overlay 처리 ================== */
 
     let response = await fetch(`${localPcmListUrl}?${params}`);
     const responseJson = await response.json();
 
-    $("#example-table").LoadingOverlay("hide", true);
+    $("#voice-table").LoadingOverlay("hide", true);
 
     if(responseJson.rc != 200){
         alert("검색에 실패하였습니다.\nresMsg: " + responseJson.resMsg);
