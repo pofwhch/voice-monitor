@@ -154,17 +154,24 @@
                         </tr>
                         <tr>
                             <td width="12%"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
-                            <td width="30%"><input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value=""></td>
-                            <td width="12%"><b>검색조건</b></td>
                             <td width="30%">
                               <div class="col-md-6 ui-sortable">
+                                <input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value="">
+                              </div>
+                              <div class="col-md-4 ui-sortable">
                                 <select id="se_searchType" class="form-control">
-                                    <option value="">-선택-</option>
-                                    <option value="full-sentence-with-space">전체일치 (띄어쓰기 O)</option>
-                                    <option value="full-sentence-without-space">전체일치 (띄어쓰기 X)</option>
-                                    <option value="part-sentence-with-space">부분일치 (띄어쓰기 O)</option>
-                                    <option value="part-sentence-without-space">부분일치 (띄어쓰기 X)</option>
+                                  <option value="">-검색조건 선택-</option>
+                                  <option value="full-sentence-with-space">전체일치 (띄어쓰기 O)</option>
+                                  <option value="full-sentence-without-space">전체일치 (띄어쓰기 X)</option>
+                                  <option value="part-sentence-with-space">부분일치 (띄어쓰기 O)</option>
+                                  <option value="part-sentence-without-space">부분일치 (띄어쓰기 X)</option>
                                 </select>
+                              </div>
+                            </td>
+                            <td width="12%"><b>최대 신뢰점수</b></td>
+                            <td width="30%">
+                              <div class="col-md-4 ui-sortable">
+                                <input id="tx_maxConfidence" type="text" class="form-control">
                               </div>
                             <td width="6%"  style="text-align: right;">
                                 <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>

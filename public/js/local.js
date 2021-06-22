@@ -57,7 +57,7 @@ $(document).ready(function () {
         selectable:false, //make rows selectable
         columns: [
             { title: '순번', formatter: "rownum", hozAlign: "center", vertAlign:"middle", width: 60, frozen:true },
-            { title: '들어보기', formatter: playIcon, width:100, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
+            { title: '들어보기', formatter: playIcon, width:80, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
                 selectedRowInfo = cell.getRow().getData();
 
                 $('#la_sttResult').text(selectedRowInfo.sttResult);
@@ -114,10 +114,9 @@ $(document).ready(function () {
 
                 // PCM Player 팝업 출력 및 음성 파일 실행
                 $("#modal-message").dialog("open");
-                // wavesurfer.play();
 
             }, frozen:true },
-            { title: '이력보기', formatter: histIcon, width:100, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
+            { title: '발화이력', formatter: histIcon, width:80, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
                 selectedRowInfo = cell.getRow().getData();
                 let creationDate = selectedRowInfo.creationDate;
                 
@@ -134,7 +133,8 @@ $(document).ready(function () {
                     deviceId: selectedRowInfo.deviceId,
                     deviceType: '',
                     searchWords: '',
-                    searchType: ''
+                    searchType: '',
+                    maxConfidence: ''
                 });
 
                 /* ================== START : Loading Overlay 처리 ================== */
@@ -162,15 +162,20 @@ $(document).ready(function () {
                 // 발화이력 팝업 출력
                 $("#modal-hist").dialog("open");
             }, frozen:true },
-            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime", formatterParams:{
-            inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
-            outputFormat: 'YYYY-MM-DD HH:mm:ss',
-            invalidPlaceholder: '(invalid date)',
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-            }},
-            { title: '단말 모델명', field: 'deviceType', width: 100, hozAlign: "center", vertAlign:"middle" },
-            { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle", visible:false},
-            { title: '음성인식결과', field: 'sttResult', width: 200, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime",  
+              formatterParams:{
+                inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
+                outputFormat: 'YYYY-MM-DD HH:mm:ss',
+                invalidPlaceholder: '(invalid date)',
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone}},
+            { title: '단말 모델명', field: 'deviceType', width: 120, hozAlign: "center", vertAlign:"middle" },
+            { title: '단말 아이디', field: 'deviceId', width: 180, hozAlign: "center", vertAlign:"middle"},
+            { title: '음성인식결과', field: 'sttResult', width: 300, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            { title: '신뢰점수', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
+              formatter:function(cell, formatterParams, onRendered) {
+                // 소수 2째자리까지의 데이터만 출력되도록 처리
+                return parseFloat(cell.getValue()).toFixed(2);
+              }},
             { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
             { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
             { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" }
@@ -193,15 +198,20 @@ $(document).ready(function () {
         selectable:false, //make rows selectable
         columns: [
             { title: '순번', formatter: "rownum", hozAlign: "center", vertAlign:"middle", width: 60, frozen:true },
-            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime", formatterParams:{
-            inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
-            outputFormat: 'YYYY-MM-DD HH:mm:ss',
-            invalidPlaceholder: '(invalid date)',
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-            }},
+            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime",     
+              formatterParams:{
+                inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
+                outputFormat: 'YYYY-MM-DD HH:mm:ss',
+                invalidPlaceholder: '(invalid date)',
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone}},
             // { title: '단말 모델명', field: 'deviceType', width: 100, hozAlign: "center", vertAlign:"middle" },
             // { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle" },
-            { title: '음성인식결과', field: 'sttResult', width: 400, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            { title: '음성인식결과', field: 'sttResult', width: 320, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            { title: '신뢰점수', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
+              formatter:function(cell, formatterParams, onRendered) {
+                // 소수 2째자리까지의 데이터만 출력되도록 처리
+                return parseFloat(cell.getValue()).toFixed(2);
+              }},
             // { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
             // { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
             // { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" }
@@ -228,6 +238,13 @@ $(document).ready(function () {
 
     // 검색어 Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
     $('#tx_searchWords').keydown(function (key) {
+        if (key.keyCode == 13) {
+            fnSearch();
+        }
+    });
+
+    // 신뢰점수 Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
+    $('#tx_maxConfidence').keydown(function (key) {
         if (key.keyCode == 13) {
             fnSearch();
         }
@@ -299,7 +316,8 @@ async function fnSearch() {
         deviceId: $("#tx_deviceId").val(),
         deviceType: $("#tx_deviceType").val(),
         searchWords: $("#tx_searchWords").val(),
-        searchType: $('#se_searchType').val()
+        searchType: $('#se_searchType').val(),
+        maxConfidence: $('#tx_maxConfidence').val()
     });
 
     /* ================== START : Loading Overlay 처리 ================== */

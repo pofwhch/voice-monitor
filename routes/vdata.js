@@ -21,12 +21,9 @@ router.get('/', (req, res, next) => {
 /* Get pcm metadata list */
 router.get('/pcminfos', async(req, res, next) => {
     console.log(`[${new Date().toISOString()}][/pcminfos] request parameters : ${JSON.stringify(req.query)}`);
-    // console.log(`[${new Date().toISOString()}][/pcminfos] decoded request parameters : ${decodeURIComponent(req.url.split("/pcminfos?")[1])}`);
     
     let timestamp = getTimeStamp();
     let signature = getSignature(timestamp, req.url.split("/pcminfos?")[1]);
-    // console.log(`[${new Date().toISOString()}][/pcminfos] timestamp : ${timestamp}`);
-    // console.log(`[${new Date().toISOString()}][/pcminfos] signature : ${signature}`);
     
     try {
         let {data, status} = await axios({
@@ -45,9 +42,6 @@ router.get('/pcminfos', async(req, res, next) => {
             responseType: 'json'
         });
         
-        // console.log(`[${new Date().toISOString()}][/pcminfos] status : ${JSON.stringify(status)}`);
-        // console.log(`[${new Date().toISOString()}][/pcminfos] result : ${JSON.stringify(data)}`);
-
         return res.status(status).json(data).end();
     } catch (err) {
         console.log(`[${new Date().toISOString()}][/pcminfos] error : ${JSON.stringify(err)}`);
@@ -73,12 +67,9 @@ router.get('/pcminfos', async(req, res, next) => {
 /* Get pcm info */
 router.get('/pcm', async(req, res, next) => {
     console.log(`[${new Date().toISOString()}][/pcm] request parameters ${JSON.stringify(req.query)}`);
-    // console.log(`[${new Date().toISOString()}][/pcm] request parameters ${req.url.split("/pcm?")[1]}`);
     
     let timestamp = getTimeStamp();
     let signature = getSignature(timestamp, req.url.split("/pcm?")[1]);
-    // console.log(`[${new Date().toISOString()}][/pcm] timestamp : ${timestamp}`);
-    // console.log(`[${new Date().toISOString()}][/pcm] signature : ${signature}`);
     
     try {
         let {data, status} = await axios({
@@ -94,9 +85,6 @@ router.get('/pcm', async(req, res, next) => {
             timeout: config.apiServer.timeout,
             responseType: 'json'
         });
-        
-        // console.log(`[${new Date().toISOString()}][/pcminfos] status : ${JSON.stringify(status)}`);
-        // console.log(`[${new Date().toISOString()}][/pcm] result : ${JSON.stringify(data)}`);
 
         return res.status(status).json(data).end();
     } catch (err) {
