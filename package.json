@@ -1,6 +1,6 @@
 {
-  "name": "voice-monitor-p_1_0_0-10145046",
-  "version": "1.0.0",
+  "name": "voice-monitor-p_1_0_1-10145046",
+  "version": "1.0.1",
   "description": "Voice Monitoring Client for KT STT",
   "main": "server.js",
   "scripts": {

@@ -9,7 +9,7 @@
     "hostName": "http://10.221.135.183",
     "port": 28080,
     "timeout": 60000,
-    "apiKey": "OTk1MmRiMzYwOTlkNDFhZjAxNmY1YjYyNDFiOWE1MmUyM2VmODUyMyAgLQo="
+    "apiKey": "ZDg2ODM0ZmIwNGYwY2Q2NGQzYmNmNTYzNWEyZjc3NDg5MWIyNWE4MCAgLQo="
   },
   "encryption": {
     "algorithm": "sha256",

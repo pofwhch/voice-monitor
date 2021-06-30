@@ -134,7 +134,10 @@ $(document).ready(function () {
                     deviceType: '',
                     searchWords: '',
                     searchType: '',
-                    maxConfidence: ''
+                    minConfidence: '',
+                    maxConfidence: '',
+                    minBayesRisk: '',
+                    maxBayesRisk: ''
                 });
 
                 /* ================== START : Loading Overlay 처리 ================== */
@@ -171,11 +174,16 @@ $(document).ready(function () {
             { title: '단말 모델명', field: 'deviceType', width: 120, hozAlign: "center", vertAlign:"middle" },
             { title: '단말 아이디', field: 'deviceId', width: 180, hozAlign: "center", vertAlign:"middle"},
             { title: '음성인식결과', field: 'sttResult', width: 300, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            { title: '신뢰점수', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
+            { title: '신뢰도', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
               formatter:function(cell, formatterParams, onRendered) {
                 // 소수 2째자리까지의 데이터만 출력되도록 처리
                 return parseFloat(cell.getValue()).toFixed(2);
-              }},
+            }},
+            { title: '베이즈위험', field: 'bayesRisk', width: 100, hozAlign: "center", vertAlign:"middle",
+              formatter:function(cell, formatterParams, onRendered) {
+                // 소수 2째자리까지의 데이터만 출력되도록 처리
+                return parseFloat(cell.getValue()).toFixed(2);
+            }},
             { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
             { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
             { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" }
@@ -207,10 +215,15 @@ $(document).ready(function () {
             // { title: '단말 모델명', field: 'deviceType', width: 100, hozAlign: "center", vertAlign:"middle" },
             // { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle" },
             { title: '음성인식결과', field: 'sttResult', width: 320, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            { title: '신뢰점수', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
+            { title: '신뢰도', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
               formatter:function(cell, formatterParams, onRendered) {
                 // 소수 2째자리까지의 데이터만 출력되도록 처리
                 return parseFloat(cell.getValue()).toFixed(2);
+              }},
+              { title: '베이즈위험', field: 'bayesRisk', width: 100, hozAlign: "center", vertAlign:"middle",
+                formatter:function(cell, formatterParams, onRendered) {
+                  // 소수 2째자리까지의 데이터만 출력되도록 처리
+                  return parseFloat(cell.getValue()).toFixed(2);
               }},
             // { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
             // { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
@@ -221,6 +234,8 @@ $(document).ready(function () {
 
     // set default histtable data
     histtable.setData([]);
+    
+    /* ================== START : 검색 영역 이벤트 처리 ================== */
     
     // DeviceId Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
     $('#tx_deviceId').keydown(function (key) {
@@ -254,6 +269,8 @@ $(document).ready(function () {
     $('#btn_search').click(function() {
         fnSearch()
     });
+
+    /* ================== END : 검색 영역 이벤트 처리 ================== */
 
     // PCM Player Dailog Component 선언
     dialog = $( "#modal-message" ).dialog({
@@ -292,7 +309,7 @@ $(document).ready(function () {
             duration: 1000
         },
         height: 410,
-        width: '40%',
+        width: '45%',
         modal: true,
         close: function() {
             // 팝업창을 닫을 경우 발화 이력 데이터를 초기화한다,
@@ -304,7 +321,7 @@ $(document).ready(function () {
 /**
  * 
  * @method
- * @returns {} 
+ * @returns {void} 
  */
 async function fnSearch() {
     let startDate = $("#dt_startDate").val() + " " + $("#se_startTime").val();
@@ -317,7 +334,10 @@ async function fnSearch() {
         deviceType: $("#tx_deviceType").val(),
         searchWords: $("#tx_searchWords").val(),
         searchType: $('#se_searchType').val(),
-        maxConfidence: $('#tx_maxConfidence').val()
+        minConfidence: $('#tx_minConfidence').val(),
+        maxConfidence: $('#tx_maxConfidence').val(),
+        minBayesRisk: $('#tx_minBayesRisk').val(),
+        maxBayesRisk: $('#tx_maxBayesRisk').val()
     });
 
     /* ================== START : Loading Overlay 처리 ================== */

@@ -27,6 +27,9 @@
         font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
         color: #707478;
       }
+      .panel {
+        margin-bottom: 10px;
+      }
       .table tbody tr td {
         padding:5px 10px 5px 10px;
       }
@@ -40,6 +43,10 @@
       }
       .form-control {
         height: 28px;
+        padding: 2px 6px;
+      }
+      .title {
+        text-align: right;
       }
       .btn { 
         padding: 3px 12px
@@ -71,7 +78,7 @@
                 <table class="table" style="margin-bottom: 0px;">
                     <tbody>
                         <tr>
-                            <td ><b>검색 시작일자 <span style="color:red">*</span></b></td>
+                            <td class="title"><b>검색 시작일자 <span style="color:red">*</span></b></td>
                             <td >
                                 <div class="col-md-6 ui-sortable">
                                   <input type="text" id="dt_startDate" class="form-control">
@@ -106,7 +113,7 @@
                                   </select>
                                 </div>
                             </td>
-                            <td ><b>검색 종료일자 <span style="color:red">*</span></b></td>
+                            <td class="title"><b>검색 종료일자 <span style="color:red">*</span></b></td>
                             <td >
                               <div class="col-md-6 ui-sortable">
                                 <input type="text" id="dt_endDate" class="form-control">
@@ -143,9 +150,9 @@
                           </td>
                         </tr>
                         <tr>
-                            <td><b>Device ID (SAID/MAC주소) <span style="color:blue">*</span></b></td>
+                            <td class="title"><b>Device ID (SAID/MAC주소) <span style="color:blue">*</span></b></td>
                             <td><input id="tx_deviceId" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value=""></td>
-                            <td><b>단말 모델명</b></td>
+                            <td class="title"><b>단말 모델명</b></td>
                             <td>
                               <div class="col-md-6 ui-sortable">
                                 <input id="tx_deviceType" type="text" class="form-control" placeholder="예: CT1102" value="">
@@ -153,14 +160,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="12%"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
+                            <td width="12%" class="title"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
+                            <td width="30%">
+                              <input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value="">
+                            </td>
+                            <td width="12%" class="title"><b>검색조건</b></td>
                             <td width="30%">
                               <div class="col-md-6 ui-sortable">
-                                <input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value="">
-                              </div>
-                              <div class="col-md-4 ui-sortable">
                                 <select id="se_searchType" class="form-control">
-                                  <option value="">-검색조건 선택-</option>
+                                  <option value="">-선택-</option>
                                   <option value="full-sentence-with-space">전체일치 (띄어쓰기 O)</option>
                                   <option value="full-sentence-without-space">전체일치 (띄어쓰기 X)</option>
                                   <option value="part-sentence-with-space">부분일치 (띄어쓰기 O)</option>
@@ -168,14 +176,35 @@
                                 </select>
                               </div>
                             </td>
-                            <td width="12%"><b>최대 신뢰점수</b></td>
-                            <td width="30%">
-                              <div class="col-md-4 ui-sortable">
-                                <input id="tx_maxConfidence" type="text" class="form-control">
-                              </div>
-                            <td width="6%"  style="text-align: right;">
-                                <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
-                            </td>
+                        </tr>
+                        <tr>
+                          <td width="12%" class="title"><b>신뢰도</b></td>
+                          <td width="30%">
+                            <div class="col-md-4 ui-sortable">
+                              <input id="tx_minConfidence" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-1 ui-sortable">
+                              ~
+                            </div>
+                            <div class="col-md-4 ui-sortable">
+                              <input id="tx_maxConfidence" type="text" class="form-control">
+                            </div>
+                          </td>
+                          <td width="12%" class="title"><b>베이즈위험</b></td>
+                          <td width="30%">
+                            <div class="col-md-4 ui-sortable">
+                              <input id="tx_minBayesRisk" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-1 ui-sortable">
+                              ~
+                            </div>
+                            <div class="col-md-4 ui-sortable">
+                              <input id="tx_maxBayesRisk" type="text" class="form-control">
+                            </div>
+                          </td>
+                          <td width="6%"  style="text-align: right;">
+                              <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
+                          </td>
                         </tr>
                     </tbody>
                 </table>
@@ -229,8 +258,8 @@
     <script type="text/javascript" src="js/moment-timezone-with-data.min.js"></script>
     <script type="text/javascript" src="js/wavesurfer.js"></script>
     <script type="text/javascript" src="js/loadingoverlay.min.js"></script>
-    <!-- ================== END JAVASCRIPT LIBRARY ================== -->
     <script type="text/javascript" src="js/local.js"></script>
+    <!-- ================== END JAVASCRIPT LIBRARY ================== -->
 
 </body>
 </html>
