@@ -10,7 +10,7 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 	
-	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<!-- ================== BEGIN BASE CSS LIBRARY ================== -->
 	<link href="assets/plugins/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="assets/plugins/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 	<link href="assets/css/animate.min.css" rel="stylesheet" />
@@ -18,53 +18,9 @@
 
   <link href="css/jquery-ui.min.css" rel="stylesheet"/>
   <link href="css/tabulator.min.css" rel="stylesheet">
-	<!-- ================== END BASE CSS STYLE ================== -->
+	<!-- ================== END BASE CSS LIBRARY ================== -->
 
-  <style type="text/css">
-      body {
-        background: #d9e0e7;
-        font-size: 12px;
-        font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
-        color: #707478;
-      }
-      .panel {
-        margin-bottom: 10px;
-      }
-      .table tbody tr td {
-        padding:5px 10px 5px 10px;
-      }
-      .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-        line-height: 1.42857143;
-        vertical-align: middle;
-        border-top: 1px solid #ddd;
-      }
-      .col-md-6, .col-md-4 {
-        padding-left: 0px;
-      }
-      .form-control {
-        height: 28px;
-        padding: 2px 6px;
-      }
-      .title {
-        text-align: right;
-      }
-      .btn { 
-        padding: 3px 12px
-      }
-      .alert {
-        padding: 15px;
-        margin-bottom: 0px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-      }
-      .modal-body {
-        padding: 5px 15px;
-      }
-      .modal-footer {
-        border-top-color: #e2e7eb;
-        padding: 10px 15px 5px;
-      }
-  </style>
+  <link href="css/voice-monitor.css" rel="stylesheet">
 </head>
 <body>
     <!-- begin #content -->
@@ -160,15 +116,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="12%" class="title"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
+                            <td class="title" width="12%"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
                             <td width="30%">
                               <input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value="">
                             </td>
-                            <td width="12%" class="title"><b>검색조건</b></td>
+                            <td class="title" width="12%"><b>검색조건</b></td>
                             <td width="30%">
                               <div class="col-md-6 ui-sortable">
                                 <select id="se_searchType" class="form-control">
-                                  <option value="">-선택-</option>
+                                  <option value="">- 선택 -</option>
                                   <option value="full-sentence-with-space">전체일치 (띄어쓰기 O)</option>
                                   <option value="full-sentence-without-space">전체일치 (띄어쓰기 X)</option>
                                   <option value="part-sentence-with-space">부분일치 (띄어쓰기 O)</option>
@@ -178,33 +134,29 @@
                             </td>
                         </tr>
                         <tr>
-                          <td width="12%" class="title"><b>신뢰도</b></td>
-                          <td width="30%">
-                            <div class="col-md-4 ui-sortable">
-                              <input id="tx_minConfidence" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-1 ui-sortable">
-                              ~
-                            </div>
-                            <div class="col-md-4 ui-sortable">
-                              <input id="tx_maxConfidence" type="text" class="form-control">
-                            </div>
-                          </td>
-                          <td width="12%" class="title"><b>베이즈위험</b></td>
-                          <td width="30%">
-                            <div class="col-md-4 ui-sortable">
-                              <input id="tx_minBayesRisk" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-1 ui-sortable">
-                              ~
-                            </div>
-                            <div class="col-md-4 ui-sortable">
-                              <input id="tx_maxBayesRisk" type="text" class="form-control">
-                            </div>
-                          </td>
-                          <td width="6%"  style="text-align: right;">
-                              <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
-                          </td>
+                            <td class="title" width="12%"><b>신뢰도</b></td>
+                            <td width="30%">
+                              <div class="col-md-4 ui-sortable">
+                                <input id="tx_minConfidence" type="text" class="form-control" placeholder="MIN">
+                              </div>
+                              <div class="col-md-1 ui-sortable">~</div>
+                              <div class="col-md-4 ui-sortable">
+                                <input id="tx_maxConfidence" type="text" class="form-control" placeholder="MAX">
+                              </div>
+                            </td>
+                            <td class="title" width="12%"><b>베이즈위험</b></td>
+                            <td width="30%">
+                              <div class="col-md-4 ui-sortable">
+                                <input id="tx_minBayesRisk" type="text" class="form-control" placeholder="MIN">
+                              </div>
+                              <div class="col-md-1 ui-sortable">~</div>
+                              <div class="col-md-4 ui-sortable">
+                                <input id="tx_maxBayesRisk" type="text" class="form-control" placeholder="MAX">
+                              </div>
+                            </td>
+                            <td width="6%"  style="text-align: right;">
+                                <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -258,8 +210,9 @@
     <script type="text/javascript" src="js/moment-timezone-with-data.min.js"></script>
     <script type="text/javascript" src="js/wavesurfer.js"></script>
     <script type="text/javascript" src="js/loadingoverlay.min.js"></script>
-    <script type="text/javascript" src="js/local.js"></script>
     <!-- ================== END JAVASCRIPT LIBRARY ================== -->
+    
+    <script type="text/javascript" src="js/voice-monitor.js"></script>
 
 </body>
 </html>

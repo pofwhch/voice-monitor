@@ -309,7 +309,7 @@ $(document).ready(function () {
             duration: 1000
         },
         height: 410,
-        width: '45%',
+        width: 745,
         modal: true,
         close: function() {
             // 팝업창을 닫을 경우 발화 이력 데이터를 초기화한다,

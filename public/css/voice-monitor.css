@@ -1,0 +1,44 @@
+/* Voice Monitor Converted CSS */
+body {
+    background: #d9e0e7;
+    font-size: 12px;
+    font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #707478;
+}
+.panel {
+    margin-bottom: 10px;
+}
+.table tbody tr td {
+    padding:5px 10px 5px 10px;
+}
+.table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    line-height: 1.42857143;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+}
+.col-md-6, .col-md-4 {
+    padding-left: 0px;
+}
+.form-control {
+    height: 28px;
+    padding: 2px 2px;
+}
+.btn { 
+    padding: 3px 12px
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.modal-body {
+    padding: 5px 5px;
+}
+.modal-footer {
+    border-top-color: #e2e7eb;
+    padding: 10px 15px 5px;
+}
+.title {
+    text-align: right;
+}
