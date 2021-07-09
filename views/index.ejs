@@ -131,6 +131,9 @@
                                   <option value="part-sentence-without-space">부분일치 (띄어쓰기 X)</option>
                                 </select>
                               </div>
+                              <td width="6%"  style="text-align: right;">
+                                <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
+                            </td>
                             </td>
                         </tr>
                         <tr>
@@ -155,7 +158,7 @@
                               </div>
                             </td>
                             <td width="6%"  style="text-align: right;">
-                                <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
+                                <a id="btn_download" class="btn btn-info m-r-5"><i class="fa fa-download"></i> 다운로드</a>
                             </td>
                         </tr>
                     </tbody>
@@ -191,6 +194,22 @@
           <li><label>이력 조회 기준&nbsp; : &nbsp;</label><label id="la_targetCreationDate"></label>, <label id="la_targetSttResult"></label></li>
         </ul>
         <div id="voice-hist-table"></div>
+      </div>
+    </div>
+
+    <!-- #modal-message -->
+    <div class="modal-content" id="modal-memo" title="모니터링 메모" style="display:none;">
+        <ul>
+          <li><label>메모 대상&nbsp; : &nbsp;</label><label id="la_memoTargetCreationDate"></label>, <label id="la_memoTargetSttResult"></label></li>
+        </ul>
+        <div class="modal-body">
+          <!-- <div class="col-md-9 ui-sortable"> -->
+            <textarea id="tx_memo" class="form-control" placeholder="Textarea" rows="5"></textarea>
+          <!-- </div> -->
+        </div>
+        <div class="modal-footer" style="text-align: center;">
+          <a href="javascript:;" id = "btn_memo_save" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> SAVE</a>
+      </div>
       </div>
     </div>
     

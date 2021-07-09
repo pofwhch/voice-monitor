@@ -17,6 +17,8 @@ let table;
 let histtable;
 let wavesurfer;
 let dialog;
+let selectedCell;
+let selectedRow;
 let selectedRowInfo;
 
 $(document).ready(function () {
@@ -46,6 +48,11 @@ $(document).ready(function () {
         return "<a class='btn btn-xs btn-icon btn-circle'><i class='fa fa-3x fa-list-ul'></i></a>";
     };
 
+    //Generate memo icon
+    const memoIcon = function(cell, formatterParams){ 
+        return "<a class='btn btn-xs btn-icon btn-circle'><i class='fa fa-3x fa-pencil'></i></a>";
+    };
+
     //Build Tabulator
     table = new Tabulator("#voice-table", {
         height:"495px",
@@ -55,6 +62,7 @@ $(document).ready(function () {
         paginationSizeSelector:[10, 20, 50],
         movableColumns:false,
         selectable:false, //make rows selectable
+        downloadRowRange:"all",
         columns: [
             { title: '순번', formatter: "rownum", hozAlign: "center", vertAlign:"middle", width: 60, frozen:true },
             { title: '들어보기', formatter: playIcon, width:80, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
@@ -165,6 +173,21 @@ $(document).ready(function () {
                 // 발화이력 팝업 출력
                 $("#modal-hist").dialog("open");
             }, frozen:true },
+            { title: '메모하기', formatter: memoIcon, width:80, hozAlign:"center", vertAlign:"middle", cellClick: async (e, cell) => {
+                selectedCell = cell;
+                selectedRow = cell.getRow();
+                selectedRowInfo = selectedRow.getData();
+
+                $('#la_memoTargetSttResult').text(selectedRowInfo.sttResult);
+                $('#la_memoTargetCreationDate').text(moment.tz(selectedRowInfo.creationDate, 'Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'));
+
+                /* ================== START : 기등록된 메모 정보 셋팅 ================== */
+                $('#tx_memo').val(selectedRowInfo.memo == undefined ? '' : selectedRowInfo.memo);
+                /* ================== END : 기등록된 메모 정보 셋팅 =================== */
+
+                // 메모 팝업 출력
+                $("#modal-memo").dialog("open");
+            }, frozen:true },
             { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime",  
               formatterParams:{
                 inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
@@ -186,7 +209,8 @@ $(document).ready(function () {
             }},
             { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
             { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" }
+            // { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            { title: '메모', field: 'memo', width: 120, hozAlign: "center", vertAlign:"middle", visible: false, download:true }
         ],
         tooltips:true
     });
@@ -267,7 +291,17 @@ $(document).ready(function () {
 
     /* 조회 버튼 클릭시 이벤트 처리 */
     $('#btn_search').click(function() {
-        fnSearch()
+        fnSearch();
+    });
+
+    /* 다운로드 버튼 클릭시 이벤트 처리 */
+    $('#btn_download').click(function() {
+        if (table.getDataCount()) {
+            let now = moment.tz(new Date(), 'Asia/Seoul').format('YYYYMMDD_HHmmss');
+            table.download('csv', `voice_monitor_download_${now}.csv`)
+        } else {
+            alert("다운로드할 데이터가 존재하지 않습니다.\n먼저 데이터를 조회해주세요.")
+        }
     });
 
     /* ================== END : 검색 영역 이벤트 처리 ================== */
@@ -315,6 +349,32 @@ $(document).ready(function () {
             // 팝업창을 닫을 경우 발화 이력 데이터를 초기화한다,
             histtable.setData([]);
         }
+    });
+
+    // 메모 Dailog Component 선언
+    dialog = $( "#modal-memo" ).dialog({
+        autoOpen: false,
+        show: {
+            effect: "fade",
+            duration: 1000
+        },
+        height: 220,
+        width: 400,
+        modal: true,
+        close: function() {
+            // 팝업창을 닫을 경우 메모 데이터를 저장한다,
+            // selectedRow.update({"memo":$("#tx_memo").val()}); //update the row data for field "memo"
+        }
+    });
+    
+    /* 메모저장 버튼 클릭시 이벤트 처리 */
+    $('#btn_memo_save').click(function() {
+        if ($("#tx_memo").val() != '') {
+            selectedRow.update({"memo":$("#tx_memo").val()}); //update the row data for field "memo"
+            selectedCell.getElement().style.backgroundColor = "#ffce00";
+        }
+
+        $("#modal-memo").dialog("close");
     });
 });
 
