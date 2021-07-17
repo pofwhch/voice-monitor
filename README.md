@@ -3,8 +3,6 @@
 STT Voice PCM 파일을 검색하고 직접 들으면서 품질 관리할 수 있는 모니터링 클라이언트로서
 Node.js pkg 모듈을 활용하여 standalone 실행파일을 생성할 수 있다. 
 
-pkg : Node실행 환경과 패키지를 모두 모아서 바로 실행할 수 있는(executable) 단 한 개의 파일을 만들어주는 바이너리 컴파일 도구
-
 ---
 
 ### Standalone 실행파일 생성하기 
@@ -61,3 +59,32 @@ standalone 실행파일을 생성하지 않고 직접 실행할 경우에는
 > 상용서버 연동 : ```$ npm run start```  
 > 테스트서버 연동 : ```$ npm run test:mac``` or ```$ npm run test:win```
 
+### 주요 활용 Library
+
+1. express - 모니터링 클라이언트 앱의 Web Application Framework
+https://www.npmjs.com/package/express
+2. pkg - Node실행 환경과 패키지를 모두 모아서 바로 실행할 수 있는(executable) 파일을 만들어주는 바이너리 컴파일 도구  
+https://www.npmjs.com/package/pkg
+3. ejs - html template 엔진으로 ejs를 이용할 경우 html 코드안에 javascript 코드를 삽일할 수 있다.  
+https://www.npmjs.com/package/ejs
+4. open - 프로그램이 최초 실행될 때 자동으로 웹페이지에 화면을 출력하기 위해 활용된 Node Module  
+https://www.npmjs.com/package/open
+5. tablulator - 화면 테이블 UI 구성에 활용된 Javascript library  
+http://tabulator.info/
+5. waversurfer.js - 화면 음성파일 출력 UI 구성 활용된 Javascript library  
+https://wavesurfer-js.org/
+6. moment.js - timezone 설정 및 데이터 전환을 위한 Javascritp library  
+https://momentjs.com/
+
+### package 설명
+```  
+|-- configs : 주요 애플리케이션 설정정보 관리 경로
+|-- exec : build 시 바이너리 실행파일 생성 경로
+|-- public : 정적인 코드 관리 경로
+    |-- assets : UI 구성에 필요한 기본 컴포넌트 (아이콘, 버튼 등) 활용 소스
+    |-- css : stylesheet 파일 경로
+    |-- js : javascript 파일 경로
+|-- routes : 라우팅 파일 경로 
+|-- utils : config 제어, 암호화 등 utility 코드 관리 경로 
+|-- views : 템플릿 파일 경로 
+```
