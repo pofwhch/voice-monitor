@@ -61,7 +61,7 @@ standalone 실행파일을 생성하지 않고 직접 실행할 경우에는
 
 ### 주요 활용 Library
 
-1. express - 모니터링 클라이언트 앱의 Web Application Framework
+1. express - 모니터링 클라이언트 앱의 Web Application Framework  
 https://www.npmjs.com/package/express
 2. pkg - Node실행 환경과 패키지를 모두 모아서 바로 실행할 수 있는(executable) 파일을 만들어주는 바이너리 컴파일 도구  
 https://www.npmjs.com/package/pkg
