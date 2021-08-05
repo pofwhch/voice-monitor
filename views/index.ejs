@@ -108,19 +108,36 @@
                         <tr>
                             <td class="title"><b>Device ID (SAID/MAC주소) <span style="color:blue">*</span></b></td>
                             <td><input id="tx_deviceId" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value=""></td>
-                            <td class="title"><b>단말 모델명</b></td>
+                            <td class="title"><b>음성인식모드</b></td>
                             <td>
                               <div class="col-md-6 ui-sortable">
-                                <input id="tx_deviceType" type="text" class="form-control" placeholder="예: CT1102" value="">
+                                <input id="tx_engineMode" type="text" class="form-control" placeholder="예: KT_GBOX|KT_REMOCON" value="">
                               </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="title" width="12%"><b>검색어 (음성인식결과) <span style="color:blue">*</span></b></td>
                             <td width="30%">
-                              <input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value="">
+                              <div class="col-md-6 ui-sortable">
+                                <input id="tx_searchWords" type="text" class="form-control" placeholder="Device ID 혹은 검색어 중 하나는 필수 입력" value="">
+                              </div>
+                              <div class="col-md-4 ui-sortable">
+                                <select id="se_searchType" class="form-control">
+                                  <option value="">- 검색조건 선택 -</option>
+                                  <option value="full-sentence-with-space">전체일치 (띄어쓰기 O)</option>
+                                  <option value="full-sentence-without-space">전체일치 (띄어쓰기 X)</option>
+                                  <option value="part-sentence-with-space">부분일치 (띄어쓰기 O)</option>
+                                  <option value="part-sentence-without-space">부분일치 (띄어쓰기 X)</option>
+                                </select>
+                              </div>
                             </td>
-                            <td class="title" width="12%"><b>검색조건</b></td>
+                            <td class="title"><b>단말 모델명</b></td>
+                            <td>
+                              <div class="col-md-6 ui-sortable">
+                                <input id="tx_deviceType" type="text" class="form-control" placeholder="예: CT1101|CT1102" value="">
+                              </div>
+                            </td>
+                            <!-- <td class="title" width="12%"><b>검색조건</b></td>
                             <td width="30%">
                               <div class="col-md-6 ui-sortable">
                                 <select id="se_searchType" class="form-control">
@@ -131,13 +148,14 @@
                                   <option value="part-sentence-without-space">부분일치 (띄어쓰기 X)</option>
                                 </select>
                               </div>
-                              <td width="6%"  style="text-align: right;">
-                                <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
+                            </td> -->
+                            <td width="6%"  style="text-align: right;">
+                              <a id="btn_search" class="btn btn-success m-r-5"><i class="fa fa-search"></i> 검색</a>
                             </td>
                             </td>
                         </tr>
                         <tr>
-                            <td class="title" width="12%"><b>신뢰도</b></td>
+                            <td class="title" width="12%"><b>Confidence Score</b></td>
                             <td width="30%">
                               <div class="col-md-4 ui-sortable">
                                 <input id="tx_minConfidence" type="text" class="form-control" placeholder="MIN">
@@ -147,7 +165,7 @@
                                 <input id="tx_maxConfidence" type="text" class="form-control" placeholder="MAX">
                               </div>
                             </td>
-                            <td class="title" width="12%"><b>베이즈위험</b></td>
+                            <td class="title" width="12%"><b>Bayes Risk</b></td>
                             <td width="30%">
                               <div class="col-md-4 ui-sortable">
                                 <input id="tx_minBayesRisk" type="text" class="form-control" placeholder="MIN">

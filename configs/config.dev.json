@@ -6,7 +6,7 @@
     "timeout": 30000
   },
   "apiServer": {
-    "hostName": "http://125.132.219.194",
+    "hostName": "http://210.179.24.212",
     "port": 28080,
     "timeout": 60000,
     "apiKey": "NmU5NDljN2M2NTZhNTZmYmY3YWVmNDI4YzYyYzZhMmM3NWNmZmVlYiAgLQo="
@@ -22,6 +22,7 @@
     "10150657": "김범준",
     "10148590": "정혜연",
     "10149841": "백두산",
-    "10145422": "최정란"
+    "10145422": "최정란",
+    "10046894": "허윤금"
   }
 }

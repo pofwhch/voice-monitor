@@ -53,7 +53,25 @@ $(document).ready(function () {
         return "<a class='btn btn-xs btn-icon btn-circle'><i class='fa fa-3x fa-pencil'></i></a>";
     };
 
-    //Build Tabulator
+    /**
+     * Build Tabulator
+     * 
+     * Formatter 활용
+     * - datetime의 경우 UTC Time으로 전달되므로 한국시간으로 출력하기 위해 활용
+     * - confidence score의 경우 소수점 둘째자리까지만 출력하기 위해 활용
+     * - bayes risk의 경우 소수점 둘째자리까지만 출력하기 위해 활용
+     * - 화면 display 정보를 변경하기 위해 mutator를 선언해서 사용하는 방법도 있다.
+     * 
+     * Fomatter와 Mutator의 차이점
+     * - An important difference between a mutator and a formatter 
+     *   is that a mutator will alter the data contained in the table, 
+     *   which will then be visible in the data retrieved using the getData function, 
+     *   a formatter will only alter how data is displayed in cells but will not affect the data itself.
+     * 
+     * Download Accessor 활용
+     * - formatter를 사용했으므로 다운로드시에도 파일에 출력된 정보를 동일하게 전환처리함 
+     * - mutator를 사용한 경우 메모 기능 적용을 통해 데이터 전환시 mutator로 선언된 데이터의 누락이 발생되는 경우 발생됨
+     */ 
     table = new Tabulator("#voice-table", {
         height:"495px",
         placeholder:"No Data Set",
@@ -139,6 +157,7 @@ $(document).ready(function () {
                     startDate: new Date(startDate).toISOString(),
                     endDate: new Date(endDate).toISOString(),
                     deviceId: selectedRowInfo.deviceId,
+                    engineMode: '',
                     deviceType: '',
                     searchWords: '',
                     searchType: '',
@@ -188,29 +207,44 @@ $(document).ready(function () {
                 // 메모 팝업 출력
                 $("#modal-memo").dialog("open");
             }, frozen:true , download:false},
-            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true, formatter:"datetime",  
+            { title: '생성일자', field: 'creationDate', width: 140, hozAlign: "center", vertAlign:"middle",  frozen:true,  formatter:"datetime",  
               formatterParams:{
                 inputFormat: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]Z',
                 outputFormat: 'YYYY-MM-DD HH:mm:ss',
                 invalidPlaceholder: '(invalid date)',
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone}},
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone},
+              accessorDownload:function(value, data, type, params, column){
+                // You can use the accessorDownload and accessorDownloadParams options on a column definition 
+                // to alter the value of data in a column before it is added to the download.
+                return moment.tz(value, 'Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
+              }
+            },
+            { title: '음성인식모드', field: 'engineMode', width: 120, hozAlign: "center", vertAlign:"middle" },
             { title: '단말 모델명', field: 'deviceType', width: 120, hozAlign: "center", vertAlign:"middle" },
-            { title: '단말 아이디', field: 'deviceId', width: 180, hozAlign: "center", vertAlign:"middle", download:false },
+            { title: '단말 아이디', field: 'deviceId', width: 180, hozAlign: "center", vertAlign:"middle" },
             { title: '음성인식결과', field: 'sttResult', width: 300, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            { title: '신뢰도', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
+            { title: 'Confidence Score', field: 'confidence', width: 140, hozAlign: "center", vertAlign:"middle",
               formatter:function(cell, formatterParams, onRendered) {
                 // 소수 2째자리까지의 데이터만 출력되도록 처리
                 return parseFloat(cell.getValue()).toFixed(2);
-            }},
-            { title: '베이즈위험', field: 'bayesRisk', width: 100, hozAlign: "center", vertAlign:"middle",
+              },
+              accessorDownload:function(value, data, type, params, column){
+                return parseFloat(value).toFixed(2);
+              }
+            },
+            { title: 'Bayes Risk', field: 'bayesRisk', width: 100, hozAlign: "center", vertAlign:"middle",
               formatter:function(cell, formatterParams, onRendered) {
                 // 소수 2째자리까지의 데이터만 출력되도록 처리
                 return parseFloat(cell.getValue()).toFixed(2);
-            }},
-            { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
-            { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+              },
+              accessorDownload:function(value, data, type, params, column){
+                return parseFloat(value).toFixed(2);
+              }
+            },
+            { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle", download:false },
+            { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea", download:false},
             // { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            { title: '메모', field: 'memo', width: 200, hozAlign: "center", vertAlign:"middle", visible: false, download:true }
+            { title: '메모', field: 'memo', width: 00, hozAlign: "center", vertAlign:"middle", visible: false, download:true }
         ],
         tooltips:true
     });
@@ -236,22 +270,17 @@ $(document).ready(function () {
                 outputFormat: 'YYYY-MM-DD HH:mm:ss',
                 invalidPlaceholder: '(invalid date)',
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone}},
-            // { title: '단말 모델명', field: 'deviceType', width: 100, hozAlign: "center", vertAlign:"middle" },
-            // { title: '단말 아이디', field: 'deviceId', width: 160, hozAlign: "center", vertAlign:"middle" },
-            { title: '음성인식결과', field: 'sttResult', width: 320, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            { title: '신뢰도', field: 'confidence', width: 80, hozAlign: "center", vertAlign:"middle",
+            { title: '음성인식결과', field: 'sttResult', width: 300, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
+            { title: 'Confidence Score', field: 'confidence', width: 140, hozAlign: "center", vertAlign:"middle",
               formatter:function(cell, formatterParams, onRendered) {
                 // 소수 2째자리까지의 데이터만 출력되도록 처리
                 return parseFloat(cell.getValue()).toFixed(2);
-              }},
-              { title: '베이즈위험', field: 'bayesRisk', width: 100, hozAlign: "center", vertAlign:"middle",
+            }},
+            { title: 'Bayes Risk', field: 'bayesRisk', width: 100, hozAlign: "center", vertAlign:"middle",
                 formatter:function(cell, formatterParams, onRendered) {
                   // 소수 2째자리까지의 데이터만 출력되도록 처리
                   return parseFloat(cell.getValue()).toFixed(2);
-              }},
-            // { title: 'SRU ID', field: 'sruId', width: 80, hozAlign: "center", vertAlign:"middle" },
-            // { title: '파일 경로', field: 'filePath', width: 500, hozAlign: "left", vertAlign:"middle", formatter:"textarea" },
-            // { title: '파일명', field: 'fileName', width: 450, hozAlign: "left", vertAlign:"middle", formatter:"textarea" }
+            }}
         ],
         tooltips:true
     });
@@ -268,8 +297,8 @@ $(document).ready(function () {
         }
     });
 
-    // 단말 모델명 Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
-    $('#tx_deviceType').keydown(function (key) {
+    // 음성인식모드 Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
+    $('#tx_engineMode').keydown(function (key) {
         if (key.keyCode == 13) {
             fnSearch();
         }
@@ -277,6 +306,13 @@ $(document).ready(function () {
 
     // 검색어 Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
     $('#tx_searchWords').keydown(function (key) {
+        if (key.keyCode == 13) {
+            fnSearch();
+        }
+    });
+
+    // 단말 모델명 Input 요소에 엔터 키다운 이벤트 발생시 데이터 조회 처리
+    $('#tx_deviceType').keydown(function (key) {
         if (key.keyCode == 13) {
             fnSearch();
         }
@@ -343,7 +379,7 @@ $(document).ready(function () {
             duration: 1000
         },
         height: 410,
-        width: 745,
+        width: 780,
         modal: true,
         close: function() {
             // 팝업창을 닫을 경우 발화 이력 데이터를 초기화한다,
@@ -359,7 +395,7 @@ $(document).ready(function () {
             duration: 1000
         },
         height: 220,
-        width: 400,
+        width: 460,
         modal: true,
         close: function() {
             // 팝업창을 닫을 경우 메모 데이터를 저장한다,
@@ -369,9 +405,12 @@ $(document).ready(function () {
     
     /* 메모저장 버튼 클릭시 이벤트 처리 */
     $('#btn_memo_save').click(function() {
-        if ($("#tx_memo").val() != '') {
-            selectedRow.update({"memo":$("#tx_memo").val()}); //update the row data for field "memo"
+        selectedRow.update({"memo":$("#tx_memo").val().trim()}); //update the row data for field "memo"
+
+        if ($("#tx_memo").val().trim() != '') {
             selectedCell.getElement().style.backgroundColor = "#ffce00";
+        } else {
+            selectedCell.getElement().style.backgroundColor = "";
         }
 
         $("#modal-memo").dialog("close");
@@ -379,7 +418,7 @@ $(document).ready(function () {
 });
 
 /**
- * 
+ * 검색조건에 해당하는 음성 데이터 목록을 조회하는 함수
  * @method
  * @returns {void} 
  */
@@ -391,6 +430,7 @@ async function fnSearch() {
         startDate: new Date(startDate).toISOString(),
         endDate: new Date(endDate).toISOString(),
         deviceId: $("#tx_deviceId").val(),
+        engineMode: $("#tx_engineMode").val(),
         deviceType: $("#tx_deviceType").val(),
         searchWords: $("#tx_searchWords").val(),
         searchType: $('#se_searchType').val(),
@@ -409,7 +449,7 @@ async function fnSearch() {
 
     let response = await fetch(`${localPcmListUrl}?${params}`);
     const responseJson = await response.json();
-
+    
     $("#voice-table").LoadingOverlay("hide", true);
 
     if(responseJson.rc != 200){

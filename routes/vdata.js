@@ -24,7 +24,7 @@ router.get('/pcminfos', async(req, res, next) => {
     
     let timestamp = getTimeStamp();
     let signature = getSignature(timestamp, req.url.split("/pcminfos?")[1]);
-    
+
     try {
         let {data, status} = await axios({
             method: "get",
